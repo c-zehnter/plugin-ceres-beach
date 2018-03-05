@@ -1,0 +1,43 @@
+{
+    "version"           :   "0.0.1",
+    "license"           :   "AGPL-3.0",
+    "name"              :   "CeresBeach",
+    "marketplaceName"   :   {"de":"Ceres Beach","en":"Ceres Beach"},
+    "pluginIcon"        :   "icon_plugin_xs.png",
+    "authorIcon"        :   "icon_author_xs.png",
+    "email"             :   "sales@plentymarkets.com",
+    "phone"             :   "+49 561 98 681 100",
+    "description"       :   "Ceres Beach Theme",
+    "shortDescription"  :   { "de": "Ceres Beach Theme", "en": "Ceres Beach Theme" },
+    "namespace"         :   "CeresBeach",
+    "author"            :   "dortmund beach design",
+    "keywords"          :   ["plentymarkets", "plugins", "layout", "theme", "ceres"],
+    "price"             :   0,
+    "categories"        :   [3518],
+    "type"              :   "theme",
+    "require"           :   ["Ceres"],
+    "serviceProvider"   :   "CeresBeach\\Providers\\CeresBeachServiceProvider",
+    "dataProviders"     :
+    [
+        {
+            "key"           :"CeresBeach\\Containers\\CeresBeachContainer",
+            "name"          :"Stylesheet",
+            "description"   :"Add changes to the CSS file"
+        },
+        {
+            "key"           :"CeresBeach\\Containers\\CeresBeachItemListContainer1",
+            "name"          :"First item list",
+            "description"   :"Display a configurable list of items in your online store"
+        },
+        {
+            "key"           :"CeresBeach\\Containers\\CeresBeachItemListContainer2",
+            "name"          :"Second item list",
+            "description"   :"Display a configurable list of items in your online store"
+        },
+        {
+            "key"           :"CeresBeach\\Containers\\CeresBeachItemListContainer3",
+            "name"          :"Third item list",
+            "description"   :"Display a configurable list of items in your online store"
+        }
+    ]
+}
