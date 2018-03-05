@@ -16,11 +16,39 @@ var minifyCSS = require("gulp-minify-css");
 var sass = require("gulp-sass");
 var autoprefixer = require("gulp-autoprefixer");
 
+var del = require("del");
+var glob = require("glob");
+
+var browserSync = require('browser-sync').create();
+var reload      = browserSync.reload;
+
+
+// browsersync
+var config = {
+
+    remoteURL: "https://www.dortmunderisch.de/",
+
+    srcDir: SCSS_SRC,
+    injectDir: "./inject",
+    localPath: "/resources",
+
+    localAssets: {
+        css: [
+            "css/beach.css"
+        ]
+    }
+
+};
+
+
 gulp.task("default", ["build"]);
 
-gulp.task("build", [
-    "build:sass-min"
-]);
+gulp.task("build", ["clean"]);
+
+// browsersync
+gulp.task("clean", ["build:sass-min"], function() {
+    return del.sync(config.injectDir);
+});
 
 // SASS
 gulp.task("build:sass-min", ["build:sass"], function()
@@ -57,11 +85,47 @@ function buildSass(outputFile, outputStyle)
         .pipe(autoprefixer(config.prefixOptions))
         .pipe(minifyCSS())
         .pipe(sourcemaps.write("."))
-        .pipe(gulp.dest(SCSS_DIST));
+        .pipe(gulp.dest(SCSS_DIST))
+        .pipe(browserSync.stream());
 }
 
+
+
+gulp.task("browserSync", function() {
+    browserSync.init({
+        proxy: {
+            target: config.remoteURL
+        },
+        rewriteRules: [{
+            // Inject Local CSS at the end of HEAD
+            match: /<\/head>/i,
+            fn: function(req, res, match) {
+                var localCssAssets = "";
+                for (var i = 0; i < config.localAssets.css.length; i++) {
+
+                    var files = glob.sync(config.localAssets.css[i], {
+                        cwd: config.injectDir
+                    });
+
+                    for (var file in files) {
+                        localCssAssets += "<link rel=\"stylesheet\" type=\"text/css\" href=\"" + config.localPath + "/" + files[file] + "\">";
+                    }
+                }
+
+                return localCssAssets + match;
+            }
+        }],
+        serveStatic: [{
+            route: config.localPath,
+            dir: config.injectDir
+        }],
+        watchTask: true
+    });
+});
+
+
 // Watchers
-gulp.task("watch:sass", function()
+gulp.task("watch:sass", ["browserSync"], function()
 {
     return gulp.watch(SCSS_SRC + "**/*.scss", ["build:sass"]);
 });

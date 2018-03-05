@@ -17,6 +17,9 @@
   },
   "homepage": "https://github.com/c-zehnter/plugin-ceres-beach#readme",
   "devDependencies": {
+    "browser-sync": "^2.23.6",
+    "del": "^3.0.0",
+    "glob": "^7.1.2",
     "gulp": "^3.9.1",
     "gulp-add-src": "^0.2.0",
     "gulp-autoprefixer": "^3.1.0",
