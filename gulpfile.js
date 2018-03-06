@@ -28,8 +28,7 @@ var config = {
 
     remoteURL: "https://www.dortmunderisch.de/",
 
-    srcDir: SCSS_SRC,
-    injectDir: "./inject",
+    injectDir: "./tmp",
     localPath: "/resources",
 
     localAssets: {
@@ -113,7 +112,7 @@ gulp.task("browserSync", ["build:sass"], function() {
         }],
         serveStatic: [{
             route: config.localPath,
-            dir: 'tmp'
+            dir: config.injectDir
         }],
         watchTask: true
     });
