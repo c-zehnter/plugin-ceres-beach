@@ -79,7 +79,7 @@ $gray-lighter:          #dcdbd8 !default;
 $gray-lighter2:         #f4f4f4 !default;
 $gray-lightest:         #f7f7f9 !default;
 
-$brand-primary:         green !default;
+$brand-primary:         blue !default;
 $brand-secondary:       #d4021d !default;
 
 $brand-success:         #7ED321 !default;
@@ -137,7 +137,7 @@ $link-hover-color:      darken($link-color, 15%) !default;
 //== Typography
 //
 //## Font, line-height, and color for body text, headings, and more.
-$font-family-sans-serif:'Times', Helvetica, Arial, sans-serif !default;
+$font-family-sans-serif:'Open Sans', Helvetica, Arial, sans-serif !default;
 $font-family-helvetica: $font-family-sans-serif !default;
 $font-family-serif:     Georgia, "Times New Roman", Times, serif !default;
 //** Default monospace fonts for `<code>`, `<kbd>`, and `<pre>`.

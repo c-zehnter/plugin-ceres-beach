@@ -20,7 +20,7 @@ var del = require("del");
 var glob = require("glob");
 
 var browserSync = require('browser-sync').create();
-var reload      = browserSync.reload;
+var runSequence = require("run-sequence");
 
 
 // browsersync
@@ -34,19 +34,15 @@ var config = {
 
     localAssets: {
         css: [
-            "css/beach.css"
+            "/css/beach.css"
         ]
     }
 
 };
 
 
-gulp.task("default", ["build"]);
-
-gulp.task("build", ["clean"]);
-
 // browsersync
-gulp.task("clean", ["build:sass-min"], function() {
+gulp.task("clean", function() {
     return del.sync(config.injectDir);
 });
 
@@ -86,12 +82,12 @@ function buildSass(outputFile, outputStyle)
         .pipe(minifyCSS())
         .pipe(sourcemaps.write("."))
         .pipe(gulp.dest(SCSS_DIST))
-        .pipe(browserSync.stream());
+        .pipe(browserSync.reload({
+            stream: true
+        }));
 }
 
-
-
-gulp.task("browserSync", function() {
+gulp.task("browserSync", ["build:sass"], function() {
     browserSync.init({
         proxy: {
             target: config.remoteURL
@@ -117,7 +113,7 @@ gulp.task("browserSync", function() {
         }],
         serveStatic: [{
             route: config.localPath,
-            dir: config.injectDir
+            dir: 'tmp'
         }],
         watchTask: true
     });
@@ -125,7 +121,24 @@ gulp.task("browserSync", function() {
 
 
 // Watchers
-gulp.task("watch:sass", ["browserSync"], function()
+gulp.task("watch:sass", ["clean", "browserSync", "build:sass"], function()
 {
     return gulp.watch(SCSS_SRC + "**/*.scss", ["build:sass"]);
 });
+
+gulp.task("build", function() {
+    runSequence([
+        "clean",
+        "build:sass"
+    ]);
+});
+
+gulp.task("default", function() {
+    runSequence(["build", "browserSync", "watch:sass"]);
+});
+
+
+
+
+
+
