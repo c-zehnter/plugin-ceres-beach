@@ -119,7 +119,7 @@ gulp.task("browserSync", ["build:sass"], function() {
 // Watchers
 gulp.task("watch:sass", ["browserSync", "build:sass"], function()
 {
-    return gulp.watch(SCSS_SRC + "**/*.scss", ["build:sass"]).on('change', browserSync.stream);
+    return gulp.watch(SCSS_SRC + "**/*.scss", ["build:sass"]).on('change', browserSync.reload);
 });
 
 gulp.task("build", function() {
