@@ -19,14 +19,14 @@ var autoprefixer = require("gulp-autoprefixer");
 var del = require("del");
 var glob = require("glob");
 
-var browserSync = require('browser-sync').create();
+var browserSync = require("browser-sync").create();
 var runSequence = require("run-sequence");
 
 
 // browsersync
 var config = {
 
-    remoteURL: "https://www.dortmunderisch.de/",
+    remoteURL: "https://hammerandbrain.plentymarkets-cloud01.com/",
 
     injectDir: "./tmp",
     localPath: "/resources",
