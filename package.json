@@ -42,6 +42,7 @@
     "font-awesome": "^4.6.3",
     "shariff": "^1.24.0",
     "owl.carousel": "^2.2.0",
-    "lightbox2": "^2.10.0"
+    "lightbox2": "^2.10.0",
+    "popper.js": "^1.12.9"
   }
 }
