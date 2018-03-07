@@ -1,9 +1,39 @@
 {% extends getPartial('page-design') %}
 
+{% set showDefaultHomepage = config("Ceres.default.homepage") %}
+{% set companyLogo  = config("Ceres.header.company_logo") %}
+{% set companyName  = config("Ceres.header.company_name") %}
+
+{% block PartialHead %}
+    <meta name="description" content="{{ config("Ceres.meta."~metaLang~".description_home") }}">
+    <meta name="robots" content="{{ config("Ceres.meta.robots_home") }}">
+
+    <meta property="og:title" content="{{ companyName }}"/>
+    <meta property="og:type" content="article"/>
+    <meta property="og:url" content="{{ services.webstoreConfig.getWebstoreConfig().domainSsl }}"/>
+    <meta property="og:image"
+          content="{% if ('http' in companyLogo) or ('layout/' in companyLogo) %}{{ companyLogo }}{% else %}{{ plugin_path('Ceres') }}/{{ companyLogo }}{% endif %}"/>
+
+    <script type="application/ld+json">
+        {"@context": "http://schema.org","@type": "WebSite","url": "{{ services.webstoreConfig.getWebstoreConfig().domainSsl }}","potentialAction":{"@type": "SearchAction","target": "{{ services.webstoreConfig.getWebstoreConfig().domainSsl }}/search?query={search_term}","query-input": "required name=search_term"}}
+    </script>
+
+    <title>{{ config("Ceres.header.company_name") }}</title>
+{% endblock %}
+
 {% block PageBody %}
 
-	<!-- Insert markup for homepage here -->
+    {% if showDefaultHomepage == "true" %}
 
-    <h1>My homepage</h1>
+        {% include 'Ceres::Homepage.MarketingHomepage.twig' %}
+
+    {% else %}
+        {% block ThemeHomepage %}
+
+            {% include 'Ceres::Homepage.DefaultHomepage.twig' %}
+
+        {% endblock %}
+
+    {% endif %}
 
 {% endblock %}
