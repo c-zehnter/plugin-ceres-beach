@@ -81,9 +81,8 @@ function buildSass(outputFile, outputStyle)
         .pipe(minifyCSS())
         .pipe(sourcemaps.write("."))
         .pipe(gulp.dest(SCSS_DIST))
-        .pipe(browserSync.reload({
-            stream: true
-        }));
+        .pipe(gulp.dest("./tmp/css"))
+        .pipe(browserSync.stream());
 }
 
 gulp.task("browserSync", ["build:sass"], function() {
@@ -96,23 +95,21 @@ gulp.task("browserSync", ["build:sass"], function() {
             match: /<\/head>/i,
             fn: function(req, res, match) {
                 var localCssAssets = "";
-                for (var i = 0; i < config.localAssets.css.length; i++) {
 
-                    var files = glob.sync(config.localAssets.css[i], {
-                        cwd: config.injectDir
-                    });
+                var files = glob.sync(config.localAssets.css[0], {
+                    cwd: "./tmp"
+                });
 
-                    for (var file in files) {
-                        localCssAssets += "<link rel=\"stylesheet\" type=\"text/css\" href=\"" + config.localPath + "/" + files[file] + "\">";
-                    }
-                }
+                //localCssAssets += "<link rel=\"stylesheet\" type=\"text/css\" href=\"" + config.localPath + "/" + files[file] + "\">";
+                localCssAssets += "<link rel=\"stylesheet\" type=\"text/css\" href=\"/resources/css/beach.css\">";
+
 
                 return localCssAssets + match;
             }
         }],
         serveStatic: [{
             route: config.localPath,
-            dir: config.injectDir
+            dir: "./tmp"
         }],
         watchTask: true
     });
@@ -120,9 +117,9 @@ gulp.task("browserSync", ["build:sass"], function() {
 
 
 // Watchers
-gulp.task("watch:sass", ["clean", "browserSync", "build:sass"], function()
+gulp.task("watch:sass", ["browserSync", "build:sass"], function()
 {
-    return gulp.watch(SCSS_SRC + "**/*.scss", ["build:sass"]);
+    return gulp.watch(SCSS_SRC + "**/*.scss", ["build:sass"]).on('change', browserSync.stream);
 });
 
 gulp.task("build", function() {
